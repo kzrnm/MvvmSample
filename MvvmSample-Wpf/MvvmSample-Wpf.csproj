@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+		<RootNamespace>Kzrnm.MvvmSample.Wpf</RootNamespace>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+		<PackageReference Include="System.Text.Json" Version="6.0.5" />
+		<Reference Condition="'$(TargetFramework)'=='net48'" Include="System.Net.Http" />
+	</ItemGroup>
+
+	<!--
+https://github.com/dotnet/wpf/issues/6792
+https://github.com/dotnet/wpf/pull/6680#issuecomment-1183552170
+-->
+	<Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+		<ItemGroup>
+			<FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
+			<Analyzer Remove="@(Analyzer)" />
+			<Analyzer Include="@(FilteredAnalyzer)" />
+		</ItemGroup>
+	</Target>
+</Project>
